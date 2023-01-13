@@ -41,24 +41,49 @@ char* parse_paths(char* line, const char* path, int lineindex)
 	FILE *pFile;
 	char buff[512];
 	char buff2[512];
-	printf("%lu\t%lu", sizeof(line), sizeof(buff2));
+	printf("%d", lineindex);
 	printf("%s path in parsepaths \n", path);
 	sprintf(buff, "%stemppaths.txt", path);
+	printf("%s tempfile name\n", buff);
 	pFile = fopen(buff, "r");
-	if (pFile==NULL) perror("error opening file");
-	
+	if (pFile==NULL) 
+	{
+		perror("error opening file");
+		printf("error");
+	}
 	else
 	{
 		int i;
+		int k;
 		for(i = 0; i < lineindex; i = i+1){
-
-			if(fgets(buff2, 512, pFile) == NULL) break;
+			char buff3[512];
+			if(fgets(buff3, 512, pFile) == NULL)
+			{
+				printf("break was called \n");
+				break;
+			}
 			else
 			{
-				strcpy(line, buff2);
-				printf("%s line in for loop\n", line);
+				int j;
+				for(j = 0; j < 512; j = j+1)
+				{
+					if(buff3[j] == '\n') 
+					{
+						k = j+1;
+						break;
+					}
+					
+					else
+					{
+						buff2[j] = buff3[j];
+					}
+				
+				}
+				buff2[k] = '\0';
+				printf("%s line in buffer\n", buff2);
 			}
 		}
+		strcpy(line, buff2);
 			
 	}
 
@@ -100,7 +125,7 @@ int file_line_count(const char* path)
 
 //inserts a file object into .json file//
 //
-void json_finserter(char line[])
+void json_finserter(const char line[])
 {
 	char buff[512];
 	sprintf(buff, "echo \"{\\\"path\\\":\\\"%s\\\", \\\"isdir\\\":0, \\\"objnum\\\":0, \\\"subdir\\\":[]}\" >> filesystem.json", line);
@@ -108,12 +133,15 @@ void json_finserter(char line[])
 }
 //inserts a dir object into .json file (including all elements of that directory in the subdir array), not currently working, due to parse_paths
 //
-void json_dinserter(const char* path)
+void json_dinserter(const char* path, const char* tmp_file)
 {
 	char buff[512];
 	char file_paths[512];
+	char cat[512];
+	sprintf(cat, "cat %stemppaths.txt", path);
 	sprintf(file_paths, "rm %stemppaths.txt", path);
 	file_searcher(path);
+	system(cat);
 	int objnum = file_line_count(path);
 	char lines[objnum][512];
 	printf("%lu\n", sizeof(lines[0]));
@@ -126,16 +154,18 @@ void json_dinserter(const char* path)
 
 	for(i = 0; i < objnum; i = i+1)
 	{
+		char objpath[512];
 		printf("%lu\n", sizeof(lines[i]));
-		strcpy(lines[i] , parse_paths(lines[i], path, i));
+		strcpy(lines[i] , parse_paths(lines[i], path, i + 1));
+		sprintf(objpath, "%s/%s", path, lines[i]);
 		printf("%s lines[i]\n", lines[i]);
-		printf("%d isFile\n", isFile(lines[i]));
-		if(isFile(lines[i]) == 1)
+		printf("%d isFile\n", isFile(objpath));
+		if(isFile(objpath) == 1)
 		{
-			json_finserter(lines[i]);
+			json_finserter(path);
 			system("echo , >> filesystem.json");
 		}
-		else if (isFile(lines[i]) == 0)
+		else if (isFile(objpath) == 0)
 		{
 			strcpy(directories[n], lines[i]);
 			n++;			
@@ -151,8 +181,10 @@ void json_dinserter(const char* path)
 	for(j = 0; j < n; j = j+1)
 	{
 		char new_path[512];
-		sprintf(new_path, "%s/%s", path, directories[j]); 
-		json_dinserter(new_path);
+		char new_tmp_file_path[512];
+		sprintf(new_path, "%s/%s", path, directories[j]);
+		sprintf(new_tmp_file_path, "%s_%s", path, directories[j]);
+		json_dinserter((new_path), new_tmp_file_path);
 	}
 	system("echo ]} >> filesystem.json");
 	system(file_paths);
@@ -164,7 +196,7 @@ int main()
 {
 	//start and end of object before and after inserting initial dir (filesystem) 
 	system("echo { > filesystem.json");
-	json_dinserter("filesystem");
+	json_dinserter("filesystem", "filesystem");
 	system("echo } >> filesystem.json");
 
 	return 0;
