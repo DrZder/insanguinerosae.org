@@ -98,7 +98,7 @@ void json_dinserter(const char* path, int jin, int iin)
 //main
 int main()
 {
-	system("echo { > filesystem.json");
+	system("echo {\\\"filesystem\\\": > filesystem.json");
 	json_dinserter("filesystem", 0, 1);
 	system("echo } >> filesystem.json");
 	return 0;
