@@ -2,20 +2,21 @@
 <html lang= "en">
 	<head>
 		<script src="filesystem.js" type="text/javascript"></script>
-		<style src="filesystem.css" type="text/css"></style>
+		<link rel="stylesheet" href="filesystem.css"></link>
 	
 	</head>
 
 	<body>
-		<a href= "index.html">home</a>
+		<nav>
+			<ul class= "navli" >
+				<li class= "navli"><a href= "index.html" class= "navli">home</a></li>
+				<li class= "navli"><a href= "filesystem.html" class= "navli active">filesystem</a></li>
+			</ul>
+		</nav>
 
-		<div id= "initpath">
+		<div class= "initpath" id= "initpath">
 
 		</div>
-		<form action="uploadfilesystem.php" method="POST" enctype="multipart/form-data">
-			<input type="file" name="uploadedFile"/>
-			<input type="submit"/>
-		</form>
 		<script>fetchJsonFile("filesystem.json", useJsonData);</script>
 	</body>
 </html>
