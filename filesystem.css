@@ -1,0 +1,47 @@
+li a.navli {
+	display: block;
+	text-align: center;
+	color: white;
+	padding: 12px 16px;
+	text-decoration: none;
+}
+.active {
+	background-color: #ac05c8;
+}
+li a:hover {
+	background-color: #111;
+}
+
+li.navli{
+	float: left;
+}
+
+ul.navli {
+	list-style-type: none; 
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	overflow: hidden;
+	background-color: #620073;	
+}
+
+a {
+	color: blue;
+}
+summary {
+	color: white;
+}
+div.initpath {
+	color: white;
+}
+div.initpath li {
+	list-style-type: none;
+}
+div.initpath a{
+	color: #0bd7cf;
+}
+body {
+	margin: 0;
+	background-color: rgb(0, 0, 0); 
+}
+
