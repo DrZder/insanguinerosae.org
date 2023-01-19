@@ -1,16 +1,45 @@
-function fetchJsonFile(path, func)
+function fetchJsonFile(path, id, func)
 {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onload = function()
 	{
-		func(JSON.parse(this.responseText).filesystem,"initpath");	
+		func(JSON.parse(this.responseText).filesystem, id);	
 	}
 
 	xhttp.open('GET', path);
 	xhttp.send();
 
 }
+function recursionInSelect(jsonObject, text)
+{
+	let subdir = jsonObject.subdir;
+	const dir = [];
+	let j = 0;
+	for( let i in subdir )
+	{
+		if(subdir[i].isdir == 1)
+		{
+			dir[j] = subdir[i];
+			j += 1;
+		}
+	}
+	for(let k in dir)
+	{
+		text += "<option value=\"" + dir[k].path + "\" name=\"" + dir[k].path + "\">" + dir[k].path + "</option>\n";
+	}
+	for(let n in dir)
+	{
+		text = recursionInSelect(dir[n], text, 0);
+	}
+	return text;
 
+}
+
+function useJsonSelect(jsonObject, id)
+{
+	text = recursionInSelect(jsonObject, "");
+	document.getElementById(id).innerHTML = text; 
+}
 function useJsonData(jsonObject, id)
 {
 	let subdir = jsonObject.subdir;

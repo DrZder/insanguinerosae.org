@@ -5,9 +5,11 @@ li a.navli {
 	padding: 12px 16px;
 	text-decoration: none;
 }
+
 .active {
 	background-color: #ac05c8;
 }
+
 li a:hover {
 	background-color: #111;
 }
@@ -25,9 +27,6 @@ ul.navli {
 	background-color: #620073;	
 }
 
-a {
-	color: blue;
-}
 summary {
 	color: white;
 }
@@ -38,7 +37,19 @@ div.initpath li {
 	list-style-type: none;
 }
 div.initpath a{
+	display: block;
+	margin-left: 22px;
+	padding: 0;
 	color: #0bd7cf;
+}
+div.initpath details summary {
+	margin: 2px;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 22px;
+}
+form {
+	margin-left: 5px;
+	color: white;
 }
 body {
 	margin: 0;

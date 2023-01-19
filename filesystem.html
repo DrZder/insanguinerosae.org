@@ -3,20 +3,34 @@
 	<head>
 		<script src="filesystem.js" type="text/javascript"></script>
 		<link rel="stylesheet" href="filesystem.css"></link>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
 	
 	</head>
 
 	<body>
 		<nav>
 			<ul class= "navli" >
-				<li class= "navli"><a href= "index.html" class= "navli">home</a></li>
-				<li class= "navli"><a href= "filesystem.html" class= "navli active">filesystem</a></li>
+				<li class= "navli"><a href= "index.html" class= "navli">Home</a></li>
+				<li class= "navli"><a href= "filesystem.html" class= "navli active">Filesystem</a></li>
 			</ul>
 		</nav>
 
 		<div class= "initpath" id= "initpath">
 
 		</div>
-		<script>fetchJsonFile("filesystem.json", useJsonData);</script>
+		<div>
+			<form action="upload.php" method="POST" enctype="multipart/form-data">
+				file: <input type="file" name="uploadedFile" id = "uploadedFile"><br>
+				<select name="Directory" id="selector">
+					
+				</select>
+				<input type="submit" value="Fileup" name="submit">
+			</form>
+		</div>
+
+		<script>
+			fetchJsonFile("filesystem.json", "initpath", useJsonData);
+			fetchJsonFile("filesystem.json", "selector", useJsonSelect);
+		</script>
 	</body>
 </html>
